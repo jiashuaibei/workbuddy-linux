@@ -1,0 +1,73 @@
+%global debug_package %{nil}
+%global __strip /bin/true
+
+Name:           workbuddy-linux
+Version:        @VERSION@
+Release:        1%{?dist}
+Summary:        WorkBuddy desktop application (community Linux package)
+License:        Proprietary
+URL:            https://copilot.tencent.com/work/
+Source0:        workbuddy-payload.tar.gz
+BuildArch:      @ARCH@
+AutoReqProv:    no
+Requires:       alsa-lib
+Requires:       at-spi2-atk
+Requires:       at-spi2-core
+Requires:       atk
+Requires:       cups-libs
+Requires:       dbus-libs
+Requires:       glib2
+Requires:       gtk3
+Requires:       libX11
+Requires:       libXcomposite
+Requires:       libXdamage
+Requires:       libXext
+Requires:       libXfixes
+Requires:       libXrandr
+Requires:       libXScrnSaver
+Requires:       libXtst
+Requires:       libnotify
+Requires:       libsecret
+Requires:       libxkbcommon
+Requires:       mesa-libgbm
+Requires:       nspr
+Requires:       nss
+Requires:       pango
+Requires:       xdg-utils
+Requires:       desktop-file-utils
+Requires:       hicolor-icon-theme
+Requires:       shared-mime-info
+Recommends:     libayatana-appindicator-gtk3
+
+%description
+Community Fedora package built from the public Kylin WorkBuddy payload.
+WorkBuddy itself is proprietary software owned by its respective rights holder.
+
+%prep
+%setup -q -c -T
+tar -xzf %{SOURCE0}
+
+%build
+
+%install
+mkdir -p %{buildroot}
+cp -a . %{buildroot}/
+chmod 4755 %{buildroot}/opt/apps/workbuddy/chrome-sandbox
+
+%post
+/usr/bin/update-desktop-database /usr/share/applications >/dev/null 2>&1 || :
+/usr/bin/update-mime-database /usr/share/mime >/dev/null 2>&1 || :
+
+%postun
+/usr/bin/update-desktop-database /usr/share/applications >/dev/null 2>&1 || :
+/usr/bin/update-mime-database /usr/share/mime >/dev/null 2>&1 || :
+
+%files
+/opt/apps/workbuddy
+/usr/bin/workbuddy
+/usr/share/applications/workbuddy.desktop
+/usr/share/icons/hicolor/*/apps/workbuddy.png
+
+%changelog
+* Mon Sep 07 2026 workbuddy-linux contributors
+- Package upstream WorkBuddy @VERSION@ without modifying its application payload.
