@@ -48,7 +48,7 @@ jobs:
 
                 version_dist="dist/$version"
                 mkdir -p "$version_dist"
-                ./scripts/build-all.sh "$upstream" "$version_dist"
+                bash ./scripts/build-all.sh "$upstream" "$version_dist"
 
                 upstream_sha=$(sha256sum "$upstream" | cut -d' ' -f1)
                 {
