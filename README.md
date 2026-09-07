@@ -1,8 +1,8 @@
 # workbuddy-linux
 
-面向 Ubuntu、Debian 和 Fedora 的 WorkBuddy Linux 社区打包项目。
+面向 Ubuntu、Debian 和 Fedora 的 WorkBuddy Linux 社区打包项目。本项目追踪 Kylin 软件仓库公开发布的 WorkBuddy 安装包，在不修改 WorkBuddy 程序主体的前提下，生成：
 
-本项目追踪 Kylin 软件仓库公开发布的 WorkBuddy 安装包，在不修改 WorkBuddy 程序主体的前提下，生成：
+从 GitHub 克隆源码后，请先运行 `chmod +x scripts/*.sh scripts/upstream.py`，再执行下文的构建命令。
 
 - 适用于 Ubuntu、Debian 及其衍生发行版的 DEB 包；
 - 适用于 Fedora 的原生 RPM 包。
