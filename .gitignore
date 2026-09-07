@@ -1,0 +1,23 @@
+# Upstream and generated binary artifacts
+/downloads/
+/extracted/
+/evidence/
+/dist/
+/build/
+*.deb
+*.rpm
+*.AppImage
+*.sha256
+
+# Local research notes
+/ANALYSIS.md
+/appimage/
+/scripts/compare_elf.py
+
+# Python and editor files
+__pycache__/
+*.py[cod]
+.venv/
+.idea/
+.vscode/
+*~
