@@ -10,12 +10,11 @@ input=$1
 output_dir=${2:-dist}
 mkdir -p "$output_dir"
 
-scripts/build-deb.sh "$input" "$output_dir"
-scripts/build-rpm.sh "$input" "$output_dir"
+bash scripts/build-deb.sh "$input" "$output_dir"
+bash scripts/build-rpm.sh "$input" "$output_dir"
 
 version=$(dpkg-deb -f "$input" Version)
 (
     cd "$output_dir"
     sha256sum *"$version"*.deb *"$version"*.rpm > "SHA256SUMS-$version"
 )
-
