@@ -1,0 +1,44 @@
+name: Compatibility report
+description: Report an installation or runtime problem
+title: "[Compatibility]: "
+labels: [compatibility]
+body:
+  - type: dropdown
+    id: package
+    attributes:
+      label: Package format
+      options:
+        - DEB
+        - RPM
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: WorkBuddy version
+      placeholder: 5.4.5
+    validations:
+      required: true
+  - type: input
+    id: system
+    attributes:
+      label: Distribution and version
+      placeholder: Ubuntu 24.04 / Debian 12 / Fedora
+    validations:
+      required: true
+  - type: input
+    id: session
+    attributes:
+      label: Desktop session
+      placeholder: GNOME Wayland / KDE X11
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem and reproduction steps
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Sanitized logs
+      description: Remove account details, tokens, cookies, local paths, and personal content.
