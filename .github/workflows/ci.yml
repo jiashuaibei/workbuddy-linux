@@ -13,4 +13,4 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Test scripts
-        run: ./scripts/test.sh
+        run: bash ./scripts/test.sh
