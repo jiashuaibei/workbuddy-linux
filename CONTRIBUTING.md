@@ -18,4 +18,4 @@
 - 不默认禁用 Electron sandbox；
 - 不在仓库中提交 DEB、RPM、AppImage 或解包后的上游文件；
 - 保持 DEB/RPM 的 `Version` 与上游完全一致；
-- 修改打包脚本后运行 `./scripts/test.sh`。
+- 修改打包脚本后运行 `bash ./scripts/test.sh`。
