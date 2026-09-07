@@ -1,0 +1,70 @@
+name: Track WorkBuddy releases
+
+on:
+  schedule:
+    - cron: "17 2 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: track-workbuddy-releases
+  cancel-in-progress: false
+
+jobs:
+  track:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install packaging tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes rpm
+
+      - name: Build and publish missing upstream versions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p downloads dist
+
+          python3 scripts/upstream.py list --arch amd64 --format tsv \
+            | while IFS=$'\t' read -r version arch filename url; do
+                tag="v$version"
+                if gh release view "$tag" >/dev/null 2>&1; then
+                  echo "Release $tag already exists; skipping."
+                  continue
+                fi
+
+                upstream="downloads/$filename"
+                curl --fail --location --retry 3 --output "$upstream" "$url"
+
+                actual_version=$(dpkg-deb -f "$upstream" Version)
+                actual_arch=$(dpkg-deb -f "$upstream" Architecture)
+                test "$actual_version" = "$version"
+                test "$actual_arch" = "$arch"
+
+                version_dist="dist/$version"
+                mkdir -p "$version_dist"
+                ./scripts/build-all.sh "$upstream" "$version_dist"
+
+                upstream_sha=$(sha256sum "$upstream" | cut -d' ' -f1)
+                {
+                  echo "Community packages built from the public Kylin WorkBuddy $version package."
+                  echo
+                  echo "Upstream URL: $url"
+                  echo "Upstream SHA-256: \`$upstream_sha\`"
+                  echo
+                  echo "The WorkBuddy application version is unchanged: \`$version\`."
+                  echo "This is an unofficial community build."
+                } > "$version_dist/RELEASE_NOTES.md"
+
+                gh release create "$tag" \
+                  --title "WorkBuddy $version" \
+                  --notes-file "$version_dist/RELEASE_NOTES.md" \
+                  "$version_dist"/*.deb \
+                  "$version_dist"/*.rpm \
+                  "$version_dist"/SHA256SUMS-"$version"
+              done
