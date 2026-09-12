@@ -1,70 +1,44 @@
-name: Track WorkBuddy releases
-
+name: Track official Linux releases
 on:
   schedule:
-    - cron: "17 2 * * *"
+    - cron: '17 * * * *'
   workflow_dispatch:
-
+  push:
+    branches: [main]
 permissions:
   contents: write
-
+  pages: write
+  id-token: write
 concurrency:
-  group: track-workbuddy-releases
+  group: official-tracker
   cancel-in-progress: false
-
 jobs:
   track:
     runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
-
-      - name: Install packaging tools
+      - name: Check official endpoints
+        id: check
+        continue-on-error: true
+        run: python3 scripts/track_official.py
+      - name: Save observations
         run: |
-          sudo apt-get update
-          sudo apt-get install --yes rpm
-
-      - name: Build and publish missing upstream versions
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          mkdir -p downloads dist
-
-          python3 scripts/upstream.py list --arch amd64 --format tsv \
-            | while IFS=$'\t' read -r version arch filename url; do
-                tag="v$version"
-                if gh release view "$tag" >/dev/null 2>&1; then
-                  echo "Release $tag already exists; skipping."
-                  continue
-                fi
-
-                upstream="downloads/$filename"
-                curl --fail --location --retry 3 --output "$upstream" "$url"
-
-                actual_version=$(dpkg-deb -f "$upstream" Version)
-                actual_arch=$(dpkg-deb -f "$upstream" Architecture)
-                test "$actual_version" = "$version"
-                test "$actual_arch" = "$arch"
-
-                version_dist="dist/$version"
-                mkdir -p "$version_dist"
-                bash ./scripts/build-all.sh "$upstream" "$version_dist"
-
-                upstream_sha=$(sha256sum "$upstream" | cut -d' ' -f1)
-                {
-                  echo "Community packages built from the public Kylin WorkBuddy $version package."
-                  echo
-                  echo "Upstream URL: $url"
-                  echo "Upstream SHA-256: \`$upstream_sha\`"
-                  echo
-                  echo "The WorkBuddy application version is unchanged: \`$version\`."
-                  echo "This is an unofficial community build."
-                } > "$version_dist/RELEASE_NOTES.md"
-
-                gh release create "$tag" \
-                  --title "WorkBuddy $version" \
-                  --notes-file "$version_dist/RELEASE_NOTES.md" \
-                  "$version_dist"/*.deb \
-                  "$version_dist"/*.rpm \
-                  "$version_dist"/SHA256SUMS-"$version"
-              done
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add web/data/releases.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Update official Linux observations'
+            git push
+          fi
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - uses: actions/deploy-pages@v4
+        id: deployment
+      - name: Report upstream failure after publishing status
+        if: steps.check.outcome == 'failure'
+        run: exit 1

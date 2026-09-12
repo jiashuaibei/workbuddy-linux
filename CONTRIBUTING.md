@@ -1,21 +1,12 @@
 # Contributing
 
-感谢参与 workbuddy-linux。
+感谢参与 WorkBuddy Linux Tracker。
 
-提交兼容性问题时，请包含：
+欢迎反馈官方链接失效、版本追踪异常、网页展示或无障碍问题。请提供包格式、版本、链接和发生时间。应用运行问题请优先反馈给腾讯。
 
-- 发行版及版本；
-- CPU 架构；
-- X11 或 Wayland 会话；
-- 安装命令和完整错误；
-- `workbuddy` 的终端启动日志。
-
-请删除日志中的账号、访问令牌、Cookie、本地路径和个人文件内容。
-
-代码提交应遵循以下原则：
-
-- 不修改 WorkBuddy 应用 payload；
-- 不默认禁用 Electron sandbox；
-- 不在仓库中提交 DEB、RPM、AppImage 或解包后的上游文件；
-- 保持 DEB/RPM 的 `Version` 与上游完全一致；
-- 修改打包脚本后运行 `bash ./scripts/test.sh`。
+- 不修改、重打包或提交 WorkBuddy 二进制。
+- 所有下载链接必须使用实际官方 HTTPS 域名，不能伪装地址。
+- 保留接口原始版本号，历史记录不得凭空补造。
+- 接口哈希不等同于文件已校验。
+- 提交前运行 `bash scripts/test.sh`。
+- 日志中请删除账号、令牌、Cookie 和个人信息。

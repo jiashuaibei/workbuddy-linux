@@ -1,5 +1,5 @@
 # Security Policy
 
-本项目只维护 Linux 安装包封装。WorkBuddy 应用自身的安全问题应提交给腾讯官方支持渠道。
+本项目维护官方 Linux 下载链接追踪脚本与网页。WorkBuddy 应用自身的安全问题请提交腾讯官方支持渠道。
 
-如果问题由本项目的安装脚本、RPM/DEB 权限、URL 协议注册或 GitHub Actions 引起，请通过 GitHub Security Advisory 私下报告，不要在公开 Issue 中提供可直接利用的细节。
+若发现下载域名校验、网页注入、历史数据或 GitHub Actions 安全问题，请通过 GitHub Security Advisory 私下报告，不要在公开 Issue 中披露敏感信息。

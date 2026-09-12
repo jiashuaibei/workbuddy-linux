@@ -2,7 +2,7 @@
 set -euo pipefail
 
 python3 -m unittest discover -s tests -p 'test_*.py' -v
-python3 -m py_compile scripts/upstream.py
+python3 -m py_compile scripts/upstream.py scripts/track_official.py
 bash -n scripts/build-deb.sh scripts/build-rpm.sh scripts/build-all.sh scripts/test.sh
 
 latest=$(python3 scripts/upstream.py latest \
@@ -11,4 +11,3 @@ latest=$(python3 scripts/upstream.py latest \
 python3 -c 'import json,sys; data=json.loads(sys.argv[1]); assert data["version"] == "5.4.5"' "$latest"
 
 echo "All tests passed."
-
