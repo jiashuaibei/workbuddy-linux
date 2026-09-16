@@ -37,7 +37,7 @@
       "upstreamTimestamp": 1789061034,
       "firstSeen": "2026-09-12T09:53:09+00:00",
       "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb",
-      "lastSuccessfulCheck": "2026-09-12T09:53:09+00:00"
+      "lastSuccessfulCheck": "2026-09-16T05:19:23+00:00"
     },
     "rpm": {
       "format": "rpm",
@@ -50,10 +50,10 @@
       "upstreamTimestamp": 1789061034,
       "firstSeen": "2026-09-12T09:53:09+00:00",
       "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-rpm",
-      "lastSuccessfulCheck": "2026-09-12T09:53:09+00:00"
+      "lastSuccessfulCheck": "2026-09-16T05:19:23+00:00"
     }
   },
   "schemaVersion": 1,
-  "lastAttempt": "2026-09-12T09:53:09+00:00",
+  "lastAttempt": "2026-09-16T05:19:23+00:00",
   "errors": {}
 }

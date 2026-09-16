@@ -1,5 +1,7 @@
 # WorkBuddy Linux Tracker
 
+网页：https://jiashuaibei.github.io/workbuddy-linux-tracker/
+
 追踪 WorkBuddy 官网公开更新接口，提供官方 Linux DEB / RPM 下载链接和历史版本记录。非腾讯官方项目。
 
 项目已停止对麒麟安装包进行二次封装。旧 v5.4.5 Release 是历史社区构建，不属于本站追踪的官方原包。旧构建脚本仅作为历史参考保留，自动化不再调用它们。
