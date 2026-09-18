@@ -1,0 +1,11 @@
+downloads
+extracted
+evidence
+dist
+build
+appimage
+*.deb
+*.rpm
+*.AppImage
+.venv
+__pycache__

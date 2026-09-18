@@ -1,6 +1,8 @@
 # WorkBuddy Linux Tracker
 
-网页：https://jiashuaibei.github.io/workbuddy-linux-tracker/
+网页：https://workbuddy-linux-tracker.vercel.app/
+
+网页由 Vercel 托管，导入此仓库并将 Root Directory 设为 `web`，框架选择 Other。推送网页更新后由 Vercel 自动部署。版本追踪仍由下述 GitHub Actions 执行；当前 GitHub 账号限制阻止定时任务运行，数据暂由手动检查更新。网页上线不代表每小时检查已恢复。
 
 追踪 WorkBuddy 官网公开更新接口，提供官方 Linux DEB / RPM 下载链接和历史版本记录。非腾讯官方项目。
 
