@@ -3,6 +3,30 @@
     {
       "format": "rpm",
       "architecture": "x86_64",
+      "version": "5.6.2.40046327",
+      "productVersion": "5.6.2.40046327",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm",
+      "domain": "download.codebuddy.cn",
+      "reportedSha256": "2e49fac166708e9716ab36dc3a7ffcf0fcea4a94591419b3654c59b67f4d392d",
+      "upstreamTimestamp": 1790769527,
+      "firstSeen": "2026-11-08T16:31:53+00:00",
+      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-rpm"
+    },
+    {
+      "format": "deb",
+      "architecture": "x86_64",
+      "version": "5.6.2.40046327",
+      "productVersion": "5.6.2.40046327",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.6.2.40046327-c7b525f3.deb",
+      "domain": "download.codebuddy.cn",
+      "reportedSha256": "12149ad8c0cd748fd5062d8f62c7827d688d8095427ada99b1ae9e7019897523",
+      "upstreamTimestamp": 1790769527,
+      "firstSeen": "2026-11-08T16:31:53+00:00",
+      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb"
+    },
+    {
+      "format": "rpm",
+      "architecture": "x86_64",
       "version": "5.5.6.38337834",
       "productVersion": "5.5.6.38337834",
       "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.5.6.38337834-5f969292.rpm",
@@ -29,31 +53,31 @@
     "deb": {
       "format": "deb",
       "architecture": "x86_64",
-      "version": "5.5.6.38337834",
-      "productVersion": "5.5.6.38337834",
-      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.5.6.38337834-5f969292.deb",
+      "version": "5.6.2.40046327",
+      "productVersion": "5.6.2.40046327",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-deb/WorkBuddy-linux-x64-deb-5.6.2.40046327-c7b525f3.deb",
       "domain": "download.codebuddy.cn",
-      "reportedSha256": "03d756b259d7086c22098fa077589a032d60948d1de7313473360eefe11e240f",
-      "upstreamTimestamp": 1789061034,
-      "firstSeen": "2026-09-12T09:53:09+00:00",
+      "reportedSha256": "12149ad8c0cd748fd5062d8f62c7827d688d8095427ada99b1ae9e7019897523",
+      "upstreamTimestamp": 1790769527,
+      "firstSeen": "2026-11-08T16:31:53+00:00",
       "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb",
-      "lastSuccessfulCheck": "2026-09-18T19:24:09+00:00"
+      "lastSuccessfulCheck": "2026-11-08T16:31:53+00:00"
     },
     "rpm": {
       "format": "rpm",
       "architecture": "x86_64",
-      "version": "5.5.6.38337834",
-      "productVersion": "5.5.6.38337834",
-      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.5.6.38337834-5f969292.rpm",
+      "version": "5.6.2.40046327",
+      "productVersion": "5.6.2.40046327",
+      "url": "https://download.codebuddy.cn/workbuddy/saas/linux-x64-rpm/WorkBuddy-linux-x64-rpm-5.6.2.40046327-c7b525f3.rpm",
       "domain": "download.codebuddy.cn",
-      "reportedSha256": "cde561d94d269a752ecdc454ec0808c03da2222ebb4c064ba3c5367949891b6a",
-      "upstreamTimestamp": 1789061034,
-      "firstSeen": "2026-09-12T09:53:09+00:00",
+      "reportedSha256": "2e49fac166708e9716ab36dc3a7ffcf0fcea4a94591419b3654c59b67f4d392d",
+      "upstreamTimestamp": 1790769527,
+      "firstSeen": "2026-11-08T16:31:53+00:00",
       "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-rpm",
-      "lastSuccessfulCheck": "2026-09-18T19:24:09+00:00"
+      "lastSuccessfulCheck": "2026-11-08T16:31:53+00:00"
     }
   },
   "schemaVersion": 1,
-  "lastAttempt": "2026-09-18T19:24:09+00:00",
+  "lastAttempt": "2026-11-08T16:31:53+00:00",
   "errors": {}
 }

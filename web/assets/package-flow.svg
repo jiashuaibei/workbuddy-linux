@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="390" viewBox="0 0 1080 390" role="img" aria-labelledby="title desc">
+<title id="title">WorkBuddy 官方包追踪与独立验证</title><desc id="desc">官方公开更新接口返回版本和 URL，经域名检查下载原始字节，计算哈希并附来源证据发布到 Releases。访客可从官方域名独立下载比较。</desc>
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="none" stroke="#377962"/></marker></defs>
+<rect width="1080" height="390" rx="20" fill="#f1f5ef"/>
+<g font-family="system-ui, Noto Sans SC, sans-serif" fill="#203c34">
+<text x="36" y="48" font-size="24" font-weight="700">从官方接口，到可独立核验的原包</text>
+<text x="36" y="78" font-size="15" fill="#52675d">公开来源 · 原始字节 · 实测 SHA-256 · 保留证据</text>
+<g fill="white" stroke="#c6d6ca"><rect x="36" y="112" width="220" height="135" rx="12"/><rect x="298" y="112" width="220" height="135" rx="12"/><rect x="560" y="112" width="220" height="135" rx="12"/><rect x="822" y="112" width="220" height="135" rx="12"/></g>
+<g font-size="19" font-weight="700"><text x="54" y="145">01 / 发现版本</text><text x="316" y="145">02 / 下载原包</text><text x="578" y="145">03 / 记录证据</text><text x="840" y="145">04 / 发布镜像</text></g>
+<g font-size="14"><text x="54" y="179">www.workbuddy.cn</text><text x="54" y="204">DEB / RPM 更新 JSON</text><text x="54" y="228">版本 · URL · 接口哈希</text><text x="316" y="179">download.codebuddy.cn</text><text x="316" y="204">HTTPS / 逐跳检查域名</text><text x="316" y="228">原样保存响应字节</text><text x="578" y="179">实测哈希 ↔ 接口哈希</text><text x="578" y="204">来源 · 时间 · 大小 · 提交</text><text x="578" y="228">如实标注匹配 / 不匹配</text><text x="840" y="179">GitHub Releases</text><text x="840" y="204">安装包 + SHA256SUMS</text><text x="840" y="228">接口响应 + provenance</text></g>
+<g stroke="#377962" stroke-width="2" marker-end="url(#arrow)"><path d="M260 180H290"/><path d="M522 180H552"/><path d="M784 180H814"/></g>
+<rect x="36" y="275" width="1006" height="78" rx="12" fill="#dfeade"/>
+<text x="56" y="307" font-size="18" font-weight="700">你可以独立复核</text><text x="56" y="334" font-size="15">自己访问官方接口 → 从官方 URL 下载 → 与 Release 附件执行 sha256sum / cmp 比较</text>
+</g></svg>

@@ -1,0 +1,37 @@
+name: Mirror official Linux packages
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/publish_official.py
+      - scripts/track_official.py
+      - .github/workflows/mirror-releases.yml
+permissions:
+  contents: read
+concurrency:
+  group: official-package-mirror
+  cancel-in-progress: false
+jobs:
+  mirror:
+    if: github.repository == 'jiashuaibei/workbuddy-linux-tracker'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        format: [deb, rpm]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - name: Test tracker and publisher
+        run: bash scripts/test.sh
+      - name: Download original bytes and publish with provenance
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/publish_official.py --format '${{ matrix.format }}'
