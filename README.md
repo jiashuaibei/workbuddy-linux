@@ -2,7 +2,7 @@
 
 [![同步检查与发布](https://github.com/jiashuaibei/workbuddy-linux/actions/workflows/track-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux/actions/workflows/track-releases.yml)
 
-[下载与版本历史](https://jiashuaibei.github.io/workbuddy-linux/) · [Vercel 备用站](https://workbuddy-linux-tracker.vercel.app/) · [Releases 原包镜像](https://github.com/jiashuaibei/workbuddy-linux/releases) · [自动发布记录](https://github.com/jiashuaibei/workbuddy-linux/actions/workflows/track-releases.yml)
+[下载与版本历史](https://jiashuaibei.github.io/workbuddy-linux/) · [Releases 原包镜像](https://github.com/jiashuaibei/workbuddy-linux/releases) · [自动发布记录](https://github.com/jiashuaibei/workbuddy-linux/actions/workflows/track-releases.yml)
 
 腾讯面向银河麒麟、统信 UOS 提供 WorkBuddy Linux 客户端，也提供了由腾讯构建的 **通用 Linux x86_64 DEB / RPM 安装包**。本项目只是通过腾讯官方公开更新接口把这些通用安装包追踪出来，提供官方下载链接、版本记录和原包镜像；安装包由腾讯制作，本项目不修改或重新封装当前追踪的官方原包。
 
@@ -104,7 +104,7 @@ flowchart TD
 - **版本记录与检查状态分开保存。** `web/data/releases.json` 只保存版本事实、首次发现时间和 `lastChanged`；相同版本、URL 和接口哈希不写文件、不提交主分支。每次检查的时间、成功格式、错误及变化结果保存在 `check-status.json`，与本次原始接口响应一起上传为 `check-status-运行ID-尝试次数` 附件，保留 7 天；Actions 运行摘要也展示检查结果。附件可能需要登录 GitHub 下载。状态不进入网页构建，因此不会引起每小时部署。
 - **一次检查，复用来源证据。** 发布脚本读取本次保存的 DEB / RPM 原始响应，避免追踪和发布各查一次时遇到不同版本。失败格式保留原有记录，另一格式仍可处理；工作流最终明确报告失败。
 - **没有新版本时轻量退出。** 仍会核对当前包的 Release 是否完整，方便在上次发布失败后继续恢复；已发布则不下载大包、不覆盖附件。如果上游在版本、URL 和接口哈希都不变时静默更换文件，当前去重策略不会发现。
-- **网页只在内容变化时部署。** 工作流比较当前 `web/` 内容指纹与 GitHub Pages 上最后成功部署的 `deployment.json`。版本变化或网页代码更新会部署；没有变化则跳过。上次部署失败、标记缺失或暂时无法读取时会重试。Vercel 备用站继续使用原域名并托管 `web/`，没有版本变化就不会产生由定时检查引发的主分支提交或 Vercel 部署。
+- **网页只在内容变化时部署。** 工作流比较当前 `web/` 内容指纹与 GitHub Pages 上最后成功部署的 `deployment.json`。版本变化或网页代码更新会部署；没有变化则跳过。上次部署失败、标记缺失或暂时无法读取时会重试。网站仅由 GitHub Pages 托管，没有版本变化就不会产生由定时检查引发的主分支提交或网页部署。
 - **发布可恢复。** 先创建草稿，上传完整附件后再公开；后续运行可恢复草稿。已公开 Release 不自动覆盖。发布时保留其他版本的 Latest 标记，请从列表按版本与格式选择。
 - 工作流只使用仓库自带的 `GITHUB_TOKEN`，无需额外 PAT。公开仓库使用标准运行器免费；GitHub 调度可能延迟。公开仓库长期无活动可能暂停定时任务，请关注工作流状态徽章。
 

@@ -20,7 +20,6 @@ __pycache__/
 .venv/
 .idea/
 .vscode/
-.vercel/
 *~
 
 # Generated Pages deployment marker
