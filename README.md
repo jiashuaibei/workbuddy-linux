@@ -78,8 +78,8 @@ PY
 
 ## 自动检查与发布
 
-- **版本记录：** `track-releases.yml` 每小时第 17 分钟运行，保存 `web/data/releases.json` 并部署 GitHub Pages。Vercel 网页独立托管，Root Directory 为 `web`。
-- **原包镜像：** `mirror-releases.yml` 每小时第 37 分钟运行（北京时间也为每小时第 37 分钟），支持 Actions → **Mirror official Linux packages** → **Run workflow** 手动触发。修改镜像代码并推送 main 也会触发。
+- **版本记录：** `track-releases.yml` 每小时第 1 分钟运行，保存 `web/data/releases.json` 并部署 GitHub Pages。Vercel 网页独立托管，Root Directory 为 `web`。
+- **原包镜像：** `mirror-releases.yml` 每小时第 21 分钟运行（北京时间也为每小时第 21 分钟），支持 Actions → **Mirror official Linux packages** → **Run workflow** 手动触发。修改镜像代码并推送 main 也会触发。
 - DEB 和 RPM 分开发布与重试，一种格式失败不会阻止另一种。按“格式 + 版本 + URL + 接口哈希”确定 Release 标识；没有变化则跳过大文件下载，不重复发布。若上游在 URL、版本及接口哈希都不变时静默更换文件，当前去重策略不会发现。
 - 先创建草稿，上传完整附件后再公开；失败可在下次运行恢复草稿。已公开的 Release 不自动覆盖。发布时保留其他版本的 Latest 标记，因此请从 Releases 列表按版本与格式选择。
 - 工作流只使用仓库自带的 `GITHUB_TOKEN`，无需额外 PAT；包镜像任务需要 `contents: write`，与 Pages 部署成功与否无关。

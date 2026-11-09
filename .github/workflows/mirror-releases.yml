@@ -1,7 +1,7 @@
 name: Mirror official Linux packages
 on:
   schedule:
-    - cron: '37 * * * *'
+    - cron: '21 * * * *'
   workflow_dispatch:
   push:
     branches: [main]
