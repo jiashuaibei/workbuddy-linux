@@ -69,7 +69,11 @@ def existing_release(repo, tag):
     if result.returncode == 0:
         return json.loads(result.stdout)
     if 'HTTP 404' in result.stderr:
-        return None
+        # GitHub's tag endpoint may hide drafts until their tag exists.
+        # Authenticated release listing includes drafts and supports recovery.
+        pages = json.loads(gh('api', f'repos/{repo}/releases?per_page=100',
+                              '--paginate', '--slurp'))
+        return next((r for page in pages for r in page if r['tag_name'] == tag), None)
     raise RuntimeError(result.stderr)
 
 

@@ -59,7 +59,7 @@ class PublisherTests(unittest.TestCase):
         import subprocess
         with patch.object(p.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'HTTP 403')):
             with self.assertRaises(RuntimeError): p.existing_release('owner/repo', 'tag')
-        with patch.object(p.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'HTTP 404')):
+        with patch.object(p.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'HTTP 404')), patch.object(p, 'gh', return_value='[[]]'):
             self.assertIsNone(p.existing_release('owner/repo', 'tag'))
 
     def test_mismatch_is_disclosed_and_assets_precede_publication(self):
@@ -90,3 +90,9 @@ class PublisherTests(unittest.TestCase):
             self.assertEqual([args[1] for args in calls], ['create', 'upload', 'edit'])
             self.assertIn('--draft', calls[0])
             self.assertIn('--draft=false', calls[-1])
+
+    def test_draft_found_when_tag_endpoint_returns_404(self):
+        import subprocess, json
+        draft = dict(tag_name='tag', draft=True, assets=[])
+        with patch.object(p.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'HTTP 404')), patch.object(p, 'gh', return_value=json.dumps([[], [draft]])):
+            self.assertEqual(p.existing_release('owner/repo', 'tag'), draft)
