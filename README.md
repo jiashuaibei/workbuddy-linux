@@ -1,5 +1,7 @@
 # WorkBuddy Linux Tracker
 
+[![原包镜像](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml) [![版本追踪](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml)
+
 [下载与版本历史](https://workbuddy-linux-tracker.vercel.app/) · [Releases 原包镜像](https://github.com/jiashuaibei/workbuddy-linux-tracker/releases) · [自动发布记录](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml)
 
 追踪 WorkBuddy 公开更新接口中的 **Linux x86_64 DEB / RPM 原包**，保留官方下载入口，并定时镜像到 GitHub Releases。本项目由社区维护，与腾讯无官方隶属关系。
@@ -82,7 +84,9 @@ PY
 - 先创建草稿，上传完整附件后再公开；失败可在下次运行恢复草稿。已公开的 Release 不自动覆盖。发布时保留其他版本的 Latest 标记，因此请从 Releases 列表按版本与格式选择。
 - 工作流只使用仓库自带的 `GITHUB_TOKEN`，无需额外 PAT；包镜像任务需要 `contents: write`，与 Pages 部署成功与否无关。
 
-**运行状态：** 配置了 cron 不等于任务已成功运行。2026-11-09 部署后实测，GitHub 因账号级账单锁定拒绝启动任务。保留云端定时配置，解除限制后请手动运行一次验证。公开仓库使用标准运行器免费；这个报错不意味着本项目要求绑定支付方式。若账单页面没有订阅、欠款或可处理的异常，可按 [GitHub 官方解锁指引](https://docs.github.com/en/billing/how-tos/troubleshooting/locked-account) 联系支持检查。GitHub 调度可能延迟；公开仓库长期没有活动也可能暂停定时任务。以 Actions 实际运行结果与 Release 附件为准。
+**运行状态：** 2026-11-09 已恢复云端自动化，并完成手动验收：[原包镜像运行成功](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/runs/42578906236)，DEB / RPM 均通过 12 项测试，并在确认版本已发布后正常跳过；[版本追踪与 Pages 部署成功](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/runs/42578923098)，已刷新版本记录。此前手动停用的追踪工作流已重新启用。当前包已存在，因此本次没有重复上传或覆盖 Release；后续发现新版本时自动下载并发布。
+
+公开仓库使用标准运行器免费，无需为本项目购买套餐。GitHub 调度可能延迟；公开仓库长期没有活动也可能暂停定时任务。以 Actions 实际运行结果与 Release 附件为准；如再次出现账号级账单锁定，请参阅 [GitHub 官方解锁指引](https://docs.github.com/en/billing/how-tos/troubleshooting/locked-account)。
 
 ## 开发与范围
 
