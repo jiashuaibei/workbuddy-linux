@@ -77,11 +77,14 @@ def existing_release(repo, tag):
     raise RuntimeError(result.stderr)
 
 
-def publish(fmt, repo, output, dry_run=False):
+def publish(fmt, repo, output, dry_run=False, metadata=None):
     now = datetime.datetime.now(datetime.timezone.utc).isoformat(timespec='seconds')
     endpoint = 'https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-' + fmt
-    with open_official(endpoint) as response:
-        raw = response.read()
+    if metadata is not None:
+        raw = metadata.read_bytes()
+    else:
+        with open_official(endpoint) as response:
+            raw = response.read()
     record = normalize(json.loads(raw), fmt, now)
     tag = release_tag(record)
     filename = f"WorkBuddy-{record['version']}-linux-x86_64.{fmt}"
@@ -159,8 +162,9 @@ def main():
     parser.add_argument('--repo', default=os.getenv('GITHUB_REPOSITORY', 'jiashuaibei/workbuddy-linux-tracker'))
     parser.add_argument('--output', type=Path, default=Path('dist/official'))
     parser.add_argument('--dry-run', action='store_true', help='Download and prepare evidence without publishing')
+    parser.add_argument('--metadata', type=Path, help='Use the exact API response saved by this check')
     args = parser.parse_args()
-    publish(args.format, args.repo, args.output, args.dry_run)
+    publish(args.format, args.repo, args.output, args.dry_run, args.metadata)
 
 
 if __name__ == '__main__':

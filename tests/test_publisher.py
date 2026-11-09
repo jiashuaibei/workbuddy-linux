@@ -96,3 +96,14 @@ class PublisherTests(unittest.TestCase):
         draft = dict(tag_name='tag', draft=True, assets=[])
         with patch.object(p.subprocess, 'run', return_value=subprocess.CompletedProcess([], 1, '', 'HTTP 404')), patch.object(p, 'gh', return_value=json.dumps([[], [draft]])):
             self.assertEqual(p.existing_release('owner/repo', 'tag'), draft)
+
+    def test_saved_snapshot_is_reused_without_second_api_request(self):
+        import json
+        with tempfile.TemporaryDirectory() as d:
+            snapshot = Path(d)/'deb.json'
+            snapshot.write_text(json.dumps(dict(version='1.2', url=Response.url)))
+            names = ['WorkBuddy-1.2-linux-x86_64.deb', 'SHA256SUMS', 'provenance.json', 'upstream-response.json']
+            old = dict(draft=False, assets=[dict(name=n) for n in names])
+            with patch.object(p, 'open_official') as fetch, patch.object(p, 'existing_release', return_value=old):
+                p.publish('deb', 'owner/repo', Path(d), metadata=snapshot)
+                fetch.assert_not_called()

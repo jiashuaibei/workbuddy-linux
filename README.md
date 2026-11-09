@@ -1,8 +1,8 @@
 # WorkBuddy Linux Tracker
 
-[![原包镜像](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml) [![版本追踪](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml)
+[![同步检查与发布](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml/badge.svg)](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml)
 
-[下载与版本历史](https://workbuddy-linux-tracker.vercel.app/) · [Releases 原包镜像](https://github.com/jiashuaibei/workbuddy-linux-tracker/releases) · [自动发布记录](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/mirror-releases.yml)
+[下载与版本历史](https://workbuddy-linux-tracker.vercel.app/) · [Releases 原包镜像](https://github.com/jiashuaibei/workbuddy-linux-tracker/releases) · [自动发布记录](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml)
 
 追踪 WorkBuddy 公开更新接口中的 **Linux x86_64 DEB / RPM 原包**，保留官方下载入口，并定时镜像到 GitHub Releases。本项目由社区维护，与腾讯无官方隶属关系。
 
@@ -78,19 +78,37 @@ PY
 
 ## 自动检查与发布
 
-- **版本记录：** `track-releases.yml` 每小时第 1 分钟运行，保存 `web/data/releases.json` 并部署 GitHub Pages。Vercel 网页独立托管，Root Directory 为 `web`。
-- **原包镜像：** `mirror-releases.yml` 每小时第 21 分钟运行（北京时间也为每小时第 21 分钟），支持 Actions → **Mirror official Linux packages** → **Run workflow** 手动触发。修改镜像代码并推送 main 也会触发。
-- DEB 和 RPM 分开发布与重试，一种格式失败不会阻止另一种。按“格式 + 版本 + URL + 接口哈希”确定 Release 标识；没有变化则跳过大文件下载，不重复发布。若上游在 URL、版本及接口哈希都不变时静默更换文件，当前去重策略不会发现。
-- 先创建草稿，上传完整附件后再公开；失败可在下次运行恢复草稿。已公开的 Release 不自动覆盖。发布时保留其他版本的 Latest 标记，因此请从 Releases 列表按版本与格式选择。
-- 工作流只使用仓库自带的 `GITHUB_TOKEN`，无需额外 PAT；包镜像任务需要 `contents: write`，与 Pages 部署成功与否无关。
+只有一个定时工作流 **Sync official Linux releases**（`track-releases.yml`），在北京时间每小时第 **1** 分钟执行，也支持 Actions → Run workflow。原先第 21 分钟的独立镜像工作流已移除。CI 仍单独检查代码提交，不设置定时任务。
 
-**运行状态：** 2026-11-09 已恢复云端自动化，并完成手动验收：[原包镜像运行成功](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/runs/42578906236)，DEB / RPM 均通过 12 项测试，并在确认版本已发布后正常跳过；[版本追踪与 Pages 部署成功](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/runs/42578923098)，已刷新版本记录。此前手动停用的追踪工作流已重新启用。当前包已存在，因此本次没有重复上传或覆盖 Release；后续发现新版本时自动下载并发布。
+```mermaid
+flowchart TD
+    A[每小时一次 / 手动运行] --> B[DEB 与 RPM 各查询一次官方接口]
+    B --> C[检查状态 → Actions 摘要与附件]
+    B --> D{版本、URL 或接口哈希变化？}
+    D -->|有变化| E[更新并提交版本记录]
+    D -->|无变化| F[保留版本记录原样]
+    E --> G[使用同一份接口响应检查 Releases]
+    F --> G
+    G -->|缺失或上次发布未完成| H[下载原包、校验并完成发布]
+    G -->|已发布| I[跳过大文件下载与上传]
+    H --> J{网页内容与已成功部署的内容一致？}
+    I --> J
+    J -->|一致| K[跳过部署]
+    J -->|有变化或上次部署失败| L[部署网页]
+```
 
-公开仓库使用标准运行器免费，无需为本项目购买套餐。GitHub 调度可能延迟；公开仓库长期没有活动也可能暂停定时任务。以 Actions 实际运行结果与 Release 附件为准；如再次出现账号级账单锁定，请参阅 [GitHub 官方解锁指引](https://docs.github.com/en/billing/how-tos/troubleshooting/locked-account)。
+- **版本记录与检查状态分开保存。** `web/data/releases.json` 只保存版本事实、首次发现时间和 `lastChanged`；相同版本、URL 和接口哈希不写文件、不提交主分支。每次检查的时间、成功格式、错误及变化结果保存在 `check-status.json`，与本次原始接口响应一起上传为 `check-status-运行ID-尝试次数` 附件，保留 7 天；Actions 运行摘要也展示检查结果。附件可能需要登录 GitHub 下载。状态不进入网页构建，因此不会引起每小时部署。
+- **一次检查，复用来源证据。** 发布脚本读取本次保存的 DEB / RPM 原始响应，避免追踪和发布各查一次时遇到不同版本。失败格式保留原有记录，另一格式仍可处理；工作流最终明确报告失败。
+- **没有新版本时轻量退出。** 仍会核对当前包的 Release 是否完整，方便在上次发布失败后继续恢复；已发布则不下载大包、不覆盖附件。如果上游在版本、URL 和接口哈希都不变时静默更换文件，当前去重策略不会发现。
+- **网页只在内容变化时部署。** 工作流比较当前 `web/` 内容指纹与 GitHub Pages 上最后成功部署的 `deployment.json`。版本变化或网页代码更新会部署；没有变化则跳过。上次部署失败、标记缺失或暂时无法读取时会重试。Vercel 继续托管 `web/`，没有版本变化就不会产生由定时检查引发的主分支提交或 Vercel 部署。
+- **发布可恢复。** 先创建草稿，上传完整附件后再公开；后续运行可恢复草稿。已公开 Release 不自动覆盖。发布时保留其他版本的 Latest 标记，请从列表按版本与格式选择。
+- 工作流只使用仓库自带的 `GITHUB_TOKEN`，无需额外 PAT。公开仓库使用标准运行器免费；GitHub 调度可能延迟。公开仓库长期无活动可能暂停定时任务，请关注工作流状态徽章。
+
+网页上的“版本记录更新”不是最近检查时间；即使很久没有新版也不代表任务停滞。请在 [统一工作流运行记录](https://github.com/jiashuaibei/workbuddy-linux-tracker/actions/workflows/track-releases.yml) 查看最新检查摘要和附件。
 
 ## 开发与范围
 
-核心代码：[发现与历史](scripts/track_official.py) · [原包镜像与证据](scripts/publish_official.py) · [发布工作流](.github/workflows/mirror-releases.yml)。
+核心代码：[发现与历史](scripts/track_official.py) · [原包镜像与证据](scripts/publish_official.py) · [发布工作流](.github/workflows/track-releases.yml)。
 
 ```bash
 bash scripts/test.sh

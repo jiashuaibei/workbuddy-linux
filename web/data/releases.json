@@ -60,8 +60,7 @@
       "reportedSha256": "12149ad8c0cd748fd5062d8f62c7827d688d8095427ada99b1ae9e7019897523",
       "upstreamTimestamp": 1790769527,
       "firstSeen": "2026-11-08T16:31:53+00:00",
-      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb",
-      "lastSuccessfulCheck": "2026-11-09T07:27:22+00:00"
+      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-deb"
     },
     "rpm": {
       "format": "rpm",
@@ -73,11 +72,9 @@
       "reportedSha256": "2e49fac166708e9716ab36dc3a7ffcf0fcea4a94591419b3654c59b67f4d392d",
       "upstreamTimestamp": 1790769527,
       "firstSeen": "2026-11-08T16:31:53+00:00",
-      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-rpm",
-      "lastSuccessfulCheck": "2026-11-09T07:27:22+00:00"
+      "source": "https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-rpm"
     }
   },
-  "schemaVersion": 1,
-  "lastAttempt": "2026-11-09T07:27:22+00:00",
-  "errors": {}
+  "schemaVersion": 2,
+  "lastChanged": "2026-11-08T16:31:53+00:00"
 }

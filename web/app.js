@@ -11,17 +11,14 @@ async function render(){
     const response=await fetch('./data/releases.json', {cache:'no-store'});
     if(!response.ok) throw Error('版本数据暂时无法读取');
     const data=await response.json();
-    const stale=Date.now()-Date.parse(data.lastAttempt)>3*3600000;
-    const failed=Object.keys(data.errors || {}).length>0;
-    status.textContent=`最近检查：${date(data.lastAttempt)}${failed?' · 部分接口失败，保留上次记录':stale?' · 数据超过 3 小时未更新':''}`;
-    if(failed || stale) status.className='error';
+    status.textContent=`版本记录更新：${date(data.lastChanged)} · 检查状态请查看 Actions`;
     for(const fmt of ['deb','rpm']) {
       const r=data.current[fmt], card=make('article',null,'card');
       if(!r){card.append(make('h3',`${fmt.toUpperCase()} 暂无可用记录`));document.querySelector('#current').append(card);continue;}
       card.append(make('span',fmt.toUpperCase()+' / x86_64','format'),make('h3',r.version,'version'),make('p',fmt==='deb'?'Ubuntu / Debian 包格式':'Fedora / RPM 包格式'));
       card.append(link(r,`下载官方 ${fmt.toUpperCase()} ↗`,'download'),make('span',new URL(r.url).hostname,'domain'));
       const source=make('a','核对 workbuddy.cn 更新接口 ↗');source.href='https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-'+fmt;
-      card.append(make('small',`成功检查：${date(r.lastSuccessfulCheck)}`),source);
+      card.append(make('small',`首次发现：${date(r.firstSeen)}`),source);
       const details=make('details');details.append(make('summary','接口 SHA-256（未验证）'),make('code',r.reportedSha256 || '接口未提供'));card.append(details);
       document.querySelector('#current').append(card);
     }
