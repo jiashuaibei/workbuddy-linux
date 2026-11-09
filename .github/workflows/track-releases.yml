@@ -51,22 +51,15 @@ jobs:
             git commit -m 'Update official Linux versions'
             git push
           fi
-      # Always check successful formats for missing releases, even if their
-      # observations were already committed by a previous interrupted run.
-      - name: Publish or recover DEB release
-        id: deb
-        if: steps.check.outputs.deb == 'true'
+      # Retry incomplete publication even when version records did not change.
+      # Publish one complete pair; never mark a partial release as Latest.
+      - name: Download and publish DEB and RPM together
+        id: release
+        if: steps.check.outputs.deb == 'true' && steps.check.outputs.rpm == 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/publish_official.py --format deb --metadata dist/check/upstream/deb.json
-      - name: Publish or recover RPM release
-        id: rpm
-        if: steps.check.outputs.rpm == 'true'
-        continue-on-error: true
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: python3 scripts/publish_official.py --format rpm --metadata dist/check/upstream/rpm.json
+        run: python3 scripts/publish_official.py --metadata-dir dist/check/upstream
       - name: Compare website with last successful deployment
         id: site
         run: python3 scripts/plan_site.py
@@ -83,11 +76,10 @@ jobs:
         if: always()
         env:
           CHECK_RESULT: ${{ steps.check.outcome }}
-          DEB_RESULT: ${{ steps.deb.outcome }}
-          RPM_RESULT: ${{ steps.rpm.outcome }}
+          RELEASE_RESULT: ${{ steps.release.outcome }}
           DEPLOY_RESULT: ${{ steps.deployment.outcome }}
         run: |
-          printf '\nRelease results: DEB=%s, RPM=%s. Pages=%s.\n' "$DEB_RESULT" "$RPM_RESULT" "$DEPLOY_RESULT" >> "$GITHUB_STEP_SUMMARY"
-          if [[ "$CHECK_RESULT" == failure || "$DEB_RESULT" == failure || "$RPM_RESULT" == failure ]]; then
+          printf '\nCombined DEB/RPM release=%s. Pages=%s.\n' "$RELEASE_RESULT" "$DEPLOY_RESULT" >> "$GITHUB_STEP_SUMMARY"
+          if [[ "$CHECK_RESULT" == failure || "$RELEASE_RESULT" == failure ]]; then
             exit 1
           fi
