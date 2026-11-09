@@ -29,7 +29,7 @@ class OfficialRedirects(urllib.request.HTTPRedirectHandler):
 def open_official(url):
     validate_url(url)
     return urllib.request.build_opener(OfficialRedirects()).open(
-        urllib.request.Request(url, headers={'User-Agent': 'workbuddy-linux-tracker/2.0',
+        urllib.request.Request(url, headers={'User-Agent': 'workbuddy-linux/2.0',
                                              'Accept-Encoding': 'identity'}), timeout=90)
 
 
@@ -159,7 +159,7 @@ def publish(fmt, repo, output, dry_run=False, metadata=None):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--format', choices=['deb', 'rpm'], required=True)
-    parser.add_argument('--repo', default=os.getenv('GITHUB_REPOSITORY', 'jiashuaibei/workbuddy-linux-tracker'))
+    parser.add_argument('--repo', default=os.getenv('GITHUB_REPOSITORY', 'jiashuaibei/workbuddy-linux'))
     parser.add_argument('--output', type=Path, default=Path('dist/official'))
     parser.add_argument('--dry-run', action='store_true', help='Download and prepare evidence without publishing')
     parser.add_argument('--metadata', type=Path, help='Use the exact API response saved by this check')

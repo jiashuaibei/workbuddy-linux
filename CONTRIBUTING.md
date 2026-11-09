@@ -1,6 +1,6 @@
 # Contributing
 
-感谢参与 WorkBuddy Linux Tracker。
+感谢参与 WorkBuddy Linux。
 
 欢迎反馈官方链接失效、版本追踪异常、网页展示或无障碍问题。请提供包格式、版本、链接和发生时间。应用运行问题请优先反馈给腾讯。
 

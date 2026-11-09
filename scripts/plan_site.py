@@ -26,7 +26,9 @@ def needs_deploy(folder, remote_marker):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--directory', type=Path, default=Path('web'))
-    parser.add_argument('--url', default='https://jiashuaibei.github.io/workbuddy-linux-tracker/deployment.json')
+    repo = os.getenv('GITHUB_REPOSITORY', 'jiashuaibei/workbuddy-linux')
+    owner, name = repo.split('/', 1)
+    parser.add_argument('--url', default=f'https://{owner}.github.io/{name}/deployment.json')
     args = parser.parse_args()
     remote = {}
     try:

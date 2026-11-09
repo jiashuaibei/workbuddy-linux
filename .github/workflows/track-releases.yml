@@ -19,7 +19,7 @@ concurrency:
   cancel-in-progress: false
 jobs:
   sync:
-    if: github.repository == 'jiashuaibei/workbuddy-linux-tracker'
+    if: github.repository == 'jiashuaibei/workbuddy-linux'
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     environment:

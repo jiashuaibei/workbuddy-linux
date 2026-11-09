@@ -33,7 +33,7 @@ def normalize(payload, fmt, now):
 
 def fetch(fmt, now, snapshot_dir=None):
     endpoint = 'https://www.workbuddy.cn/v2/update?platform=workbuddy-linux-x64-' + fmt
-    request = urllib.request.Request(endpoint, headers={'User-Agent': 'workbuddy-linux-tracker/1.0'})
+    request = urllib.request.Request(endpoint, headers={'User-Agent': 'workbuddy-linux/1.0'})
     with urllib.request.urlopen(request, timeout=30) as response:
         raw = response.read()
     record = normalize(json.loads(raw), fmt, now)
